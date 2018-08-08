@@ -1,9 +1,9 @@
 {
   "name": "bundle-inspector",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "An easy way to profile websites running in production",
   "bin": {
-    "bundle-inspector": "./dist/cli/index.js"
+    "bundle-inspector": "./dist/index.js"
   },
   "scripts": {
     "build:template": "mkdir ./dist && ./bin/generate-template"
@@ -11,6 +11,9 @@
   "engines": {
     "node": ">=8"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Scott Sidwell <developer@scottsidwell.id.au>",
   "license": "MIT",
   "devDependencies": {
