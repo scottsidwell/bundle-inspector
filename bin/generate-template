@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+const rollup = require('rollup');
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
+const fsReadFile = util.promisify(fs.readFile);
+const fsWriteFile = util.promisify(fs.writeFile);
+
+const HTML_TEMPLATE = `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>Bundle Inspector</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      [[ CSS_STYLES ]]
+    </head>
+    <body>
+      <main id="app"></main>
+      [[ JS_SCRIPTS ]]
+    </body>
+  </html>
+`;
+
+async function build() {
+  const css = await fsReadFile(path.resolve(__dirname, '../client/dashboard.css'));
+  const bundle = await rollup.rollup({
+    input: path.resolve(__dirname, '../client/dashboard.jsx'),
+    plugins: [
+      require('rollup-plugin-node-resolve')(),
+      require('rollup-plugin-commonjs')(),
+      require('rollup-plugin-replace')({
+        'process.env.NODE_ENV': JSON.stringify('production')
+      }),
+      require('rollup-plugin-babel')({
+        exclude: 'node_modules/**'
+      }),
+      require('rollup-plugin-terser').terser()
+    ]
+  });
+
+  const { code } = await bundle.generate({ format: 'iife' });
+
+  const html = HTML_TEMPLATE
+    .replace('[[ CSS_STYLES ]]', `<style>${css}</style>`)
+    .replace('[[ JS_SCRIPTS ]]', `
+      <script>window.INJECTED_STATISTICS = JSON.parse( [[ STATISTICS ]] );</script>
+      <script>${code}</script>
+    `);
+  await fsWriteFile(path.resolve(__dirname, '../dist/template.html'), html);
+}
+
+build();

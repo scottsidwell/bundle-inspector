@@ -1,0 +1,126 @@
+/* CSS files add styling rules to your content */
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,900');
+
+:root {
+  --base-unit: 10px;
+  --background: #F5F6F8;
+  --primary: #172B4D;
+  --secondary: #4A4A4A;
+
+  --color-first: #FF455C;
+  --color-second: #4A90E2;
+  --color-third: #F5A623;
+}
+
+body {
+  background-color: var(--background);
+  font-family: Roboto, sans-serif;
+  font-size: calc(var(--base-unit) * 1.5);
+  color: var(--primary);
+}
+
+h1 {
+  color: var(--primary);
+  font-size: calc(var(--base-unit) * 2);
+  font-weight: 900;
+  margin: 0;
+}
+
+h2 {
+  color: var(--secondary);
+  font-weight: 900;
+  font-size: var(--base-unit);
+  margin: 0;
+}
+h2 > input[type="checkbox"] {
+  height: calc(var(--base-unit) + 2px);
+  margin: 0;
+}
+h2 > span + span {
+  margin-left: calc(var(--base-unit) / 2);
+}
+
+div.square {
+  width: calc(var(--base-unit) * 2);
+  height: calc(var(--base-unit) * 2);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+div.square.small {
+  border: calc(var(--base-unit) / 2) solid white;
+}
+
+span.lozenge {
+  color: white;
+  padding: calc(var(--base-unit) / 4);
+  background-color: #4A90E2;
+  border-radius: calc(var(--base-unit) / 2);
+  font-weight: 500;
+}
+
+main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+article {
+  background-color: white;
+  width: calc(var(--base-unit) * 56);
+  padding: var(--base-unit);
+}
+
+article + article {
+  margin-top: calc(var(--base-unit) * 2);
+}
+h1 + h2 {
+  margin-top: calc(var(--base-unit) / 2);
+}
+h2 + section {
+  margin-top: var(--base-unit);
+}
+
+div.row {
+  display: flex;
+  justify-content: flex-start;;
+}
+
+div.row > :not(:last-child) {
+  margin-right: var(--base-unit);
+}
+
+div.row > .fixed {
+  width: 4em;
+  height: calc(var(--base-unit) * 2);
+  line-height: calc(var(--base-unit) * 2);
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+div.grow {
+  flex-grow: 1;
+}
+
+div.row + div.row {
+  margin-top: var(--base-unit);
+}
+
+div.ratio-bar {
+  height: calc(var(--base-unit) * 3);
+  margin-top: var(--base-unit);
+  width: 100%;
+}
+
+div.ratio-bar > div {
+  display: inline-block;
+  width: 30%;
+  float: left;
+  height: 100%;
+}
+
+div.dependency::before {
+  margin-left: calc(var(--base-unit) * 2);
+  margin-right: calc(var(--base-unit) * 2);
+  content: '⮑';
+}

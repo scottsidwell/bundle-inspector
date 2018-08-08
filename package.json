@@ -1,0 +1,28 @@
+{
+  "name": "bundle-inspector",
+  "version": "0.0.1",
+  "description": "An easy way to profile websites running in production",
+  "bin": {
+    "bundle-inspector": "./dist/cli/index.js"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "author": "Scott Sidwell <developer@scottsidwell.id.au>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/node": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/preset-react": "^7.0.0-beta.54",
+    "bytes": "^3.0.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "rollup": "^0.64.1",
+    "rollup-plugin-babel": "^4.0.0-beta.8",
+    "rollup-plugin-commonjs": "^9.1.4",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-terser": "^1.0.1"
+  }
+}
