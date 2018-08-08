@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import bytes from 'bytes';
+const { bundleScriptSizes, packageDuplicates, unusedPackages, unusedApplicationCode } = window.INJECTED_STATISTICS || {};
 
 const compare = (a, b) => a < b ? -1 : a === b ? 0 : 1;
 
@@ -184,9 +185,4 @@ const App = () => (
   </React.Fragment>
 )
 
-if (window.INJECTED_STATISTICS) {
-  const { bundleScriptSizes, packageDuplicates, unusedPackages, unusedApplicationCode } = window.INJECTED_STATISTICS;
-  ReactDOM.render(<App />, document.getElementById('app'));
-} else {
-  ReactDOM.render(<span>No data found :(</span>, document.getElementById('app'));
-}
+ReactDOM.render(<App />, document.getElementById('app'));

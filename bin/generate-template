@@ -44,7 +44,7 @@ async function build() {
   const html = HTML_TEMPLATE
     .replace('[[ CSS_STYLES ]]', `<style>${css}</style>`)
     .replace('[[ JS_SCRIPTS ]]', `
-      <script>window.INJECTED_STATISTICS = JSON.parse( [[ STATISTICS ]] );</script>
+      <script>window.INJECTED_STATISTICS = [[ STATISTICS ]];</script>
       <script>${code}</script>
     `);
   await fsWriteFile(path.resolve(__dirname, '../dist/template.html'), html);
