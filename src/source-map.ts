@@ -1,5 +1,6 @@
 import { CoverageEntry } from "puppeteer";
 import { RawSourceMap } from "source-map";
+import url from 'url';
 import path from 'path';
 import fetch from 'node-fetch';
 
@@ -31,9 +32,9 @@ export async function fromExternalFile(
   if (m) {
     const filename = m[1] || m[2];
     if (filename) {
-      const url = new URL(filename, originalScriptUrl);
+      const sourcemapUrl = url.resolve(originalScriptUrl, filename);
       try {
-        const response = await fetch(url.toString());
+        const response = await fetch(sourcemapUrl);
         return await response.json();
       } catch (e) {}
 
@@ -48,7 +49,7 @@ export async function fromExternalFile(
 
       // If the previous attempt failed, try adding just the basename to the existing url
       if (path.basename(filename) !== filename) {
-        const backupURL = new URL(path.basename(filename), originalScriptUrl);
+        const backupURL = url.resolve(originalScriptUrl, path.basename(filename));
         try {
           const response = await fetch(backupURL.toString());
           return await response.json();

@@ -1,12 +1,14 @@
 {
   "name": "bundle-inspector",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An easy way to profile websites running in production",
   "bin": {
     "bundle-inspector": "./dist/index.js"
   },
   "scripts": {
-    "build:template": "mkdir ./dist && ./bin/generate-template"
+    "build:cli": "tsc --noEmit && babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build:template": "mkdir -p ./dist && ./bin/generate-template",
+    "build": "rm -rf ./dist && yarn build:cli && yarn build:template"
   },
   "engines": {
     "node": ">=8"
@@ -37,7 +39,8 @@
     "rollup-plugin-commonjs": "^9.1.4",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-terser": "^1.0.1"
+    "rollup-plugin-terser": "^1.0.1",
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "minimist": "^1.2.0",

@@ -13,7 +13,7 @@ export async function generateReport(url: string, stats: InspectedBundleStats) {
     unusedApplicationCode: getUnusedApplicationCode(stats),
   };
   const injectableStatistics = JSON.stringify(JSON.stringify(data));
-  const filename = `${new Date().toLocaleString()}@${url}`.replace(/[\/\.\:]+/g, '-') + '.html';
+  const filename = `${new Date().toISOString()}@${url.replace(/[\/\.\: ]+/g, '-')}.html`;
   const html = await fsReadFile(path.resolve(__dirname, './template.html'), 'utf-8');
   // Write out file with statistics
   await fsWriteFile(
@@ -25,6 +25,7 @@ export async function generateReport(url: string, stats: InspectedBundleStats) {
 function flatten<T>(args: T[][]) {
   return ([] as T[]).concat(...args);
 }
+
 const NPM_PACKAGES = new RegExp('(~|node_modules)\/((\@[^/]+\/)?[^/]+)', 'g');
 const isDependency = (str: string) => {
   return str.includes('node_modules/') || str.includes('webpack:///~/');

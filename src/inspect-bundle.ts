@@ -24,17 +24,19 @@ async function login(browser: Browser, loginUrl: string) {
   await loginPage.close();
 }
 
-async function measurePage(browser: Browser, url: string) {
+async function measurePage(browser: Browser, url: string, selector?: string) {
   const page = await browser.newPage();
   await page.coverage.startJSCoverage();
   await page.goto(url);
-  // TODO: Implement better DOM loaded detection
+  if (selector) {
+    await page.waitForSelector(selector);
+  }
   const coverage =  await page.coverage.stopJSCoverage();
   page.close();
   return coverage;
 }
 
-export async function measureJavascriptUsageOn(url: string, loginUrl?: string) {
+export async function measureJavascriptUsageOn(url: string, loginUrl?: string, selector?: string) {
   const browser = await progress('Starting Puppeteer 🌏', () => puppeteer.launch());
 
   try {
@@ -44,7 +46,7 @@ export async function measureJavascriptUsageOn(url: string, loginUrl?: string) {
 
     const coverage = await progress(
       'Calculating coverage of initial assets ⏱',
-      () => measurePage(browser, url)
+      () => measurePage(browser, url, selector)
     );
 
     const sourcemaps = await progress(

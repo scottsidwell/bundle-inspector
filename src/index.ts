@@ -4,11 +4,12 @@ import { measureJavascriptUsageOn } from './inspect-bundle';
 
 const argv = parseArgs(process.argv.slice(2));
 const [ url ] = argv['_'];
-const loginUrl = argv['login-url'];
+const loginUrl = argv['u'] || argv['login-url'];
+const selector = argv['s'] || argv['page-loaded-selector'];
 const help = 'h' in argv || 'help' in argv;
 
 if (!help && url) {
-  measureJavascriptUsageOn(url, loginUrl);
+  measureJavascriptUsageOn(url, loginUrl, selector);
 } else {
   outputHelp();
 }
@@ -18,7 +19,8 @@ function outputHelp() {
     Usage: inspect-bundle <url> [options]
 
     Options:
-        --login-url    <login-url>   URL to visit before starting page measurement
-        -h, --help                   Output usage information
+        -u, --login-url               <login-url>   URL to visit before starting page measurement
+        -s, --page-loaded-selector    <selector>    Treat page as loaded when selector is present
+        -h, --help                                  Output usage information
   `)
 }
