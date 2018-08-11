@@ -30,7 +30,7 @@ export async function parseCoverageWithSourcemaps(coverage: CoverageEntry[], sou
     metrics[entry.url] = metrics[entry.url] || {};
     let rangeIndex = 0;
     if (sourcemaps.has(entry.text)) {
-      await walkScript(entry.text, sourcemaps.values().next().value, (originalPos, index) => {
+      await walkScript(entry.text, sourcemaps.get(entry.text)!, (originalPos, index) => {
         const filePath = originalPos.source || "<unmapped>";
 
         // Ensure we have a metric to set

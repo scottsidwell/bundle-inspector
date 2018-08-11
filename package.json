@@ -1,6 +1,6 @@
 {
   "name": "bundle-inspector",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An easy way to profile websites running in production",
   "bin": {
     "bundle-inspector": "./dist/index.js"
