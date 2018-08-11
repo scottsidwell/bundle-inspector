@@ -1,13 +1,12 @@
 import { CoverageEntry } from "puppeteer";
 import { SourceMapConsumer, RawSourceMap, NullableMappedPosition } from "source-map";
 import { InspectedBundleStats } from "./types";
-import { totalmem } from "os";
 
 async function walkScript(script: string, sourcemap: RawSourceMap, callback: (originalPos: NullableMappedPosition, index: number) => void) {
   const consumer = await new SourceMapConsumer(sourcemap);
   for (
-    let index = 0, line = 1, column = 0;
-    index <= script.length;
+    let index = 0, line = 1, column = 0, length = script.length;
+    index <= length;
     index++, column++
   ) {
     if (script[index] === "\n") { line++; column = -1; continue; }
@@ -17,9 +16,6 @@ async function walkScript(script: string, sourcemap: RawSourceMap, callback: (or
   consumer.destroy();
 }
 
-function inRange(ranges: { start: number, end: number}[], index: number) {
-  return ranges.find(range => index >= range.start && index < range.end);
-}
 function sum(numbers: number[]) {
   return numbers.reduce((total, number) => number + total, 0);
 }
@@ -32,16 +28,21 @@ export async function parseCoverageWithSourcemaps(coverage: CoverageEntry[], sou
   const metrics = {} as { [srcUrl: string]: { [packageString: string]: CodeUsage } };
   for (const entry of coverage) {
     metrics[entry.url] = metrics[entry.url] || {};
+    let rangeIndex = 0;
     if (sourcemaps.has(entry.text)) {
-      await walkScript(entry.text, sourcemaps.get(entry.text)!, (originalPos, index) => {
+      await walkScript(entry.text, sourcemaps.values().next().value, (originalPos, index) => {
         const filePath = originalPos.source || "<unmapped>";
 
         // Ensure we have a metric to set
         metrics[entry.url][filePath] = metrics[entry.url][filePath] || metric(0,0);
         // Increment the total size by one
         metrics[entry.url][filePath].totalSize++;
+
         // If the current position is in the range, then count it
-        if (inRange(entry.ranges, index)) {
+        if (entry.ranges[rangeIndex].end <= index) {
+          rangeIndex++;
+        }
+        if (entry.ranges[rangeIndex] && index >= entry.ranges[rangeIndex].start && index < entry.ranges[rangeIndex].end) {
           metrics[entry.url][filePath].totalUsed++
         }
       });
