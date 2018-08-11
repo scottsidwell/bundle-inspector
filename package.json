@@ -8,7 +8,8 @@
   "scripts": {
     "build:cli": "tsc --noEmit && babel src --out-dir dist --extensions \".ts,.tsx\"",
     "build:template": "mkdir -p ./dist && ./bin/generate-template",
-    "build": "rm -rf ./dist && yarn build:cli && yarn build:template"
+    "build": "rm -rf ./dist && yarn build:cli && yarn build:template",
+    "prepublishOnly": "yarn build"
   },
   "engines": {
     "node": ">=8"
