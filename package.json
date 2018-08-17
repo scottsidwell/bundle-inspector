@@ -5,6 +5,7 @@
   "bin": {
     "bundle-inspector": "./dist/index.js"
   },
+  "repository": "https://github.com/scottsidwell/bundle-inspector",
   "scripts": {
     "build:cli": "tsc --noEmit && babel src --out-dir dist --extensions \".ts,.tsx\"",
     "build:template": "mkdir -p ./dist && ./bin/generate-template",
